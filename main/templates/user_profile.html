@@ -1,0 +1,26 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Профиль пользователя {% endblock title %}
+
+{% block content %}
+
+<br><h3>Редактировать профиль</h3><br><br>
+
+<form align="center" method="POST">
+    {% csrf_token %}
+    Логин<br>
+    {{ form.username }}<br><br>
+    Имя<br>
+    {{ form.first_name }}<br><br>
+    Фамилия<br>
+    {{ form.last_name }}<br><br>
+    Почта<br>
+    {{ form.email }}<br><br>
+    Пароль<br>
+    {{ form.password1 }}<br><br>
+    Пароль еще раз<br>
+    {{ form.password2 }}<br><br>
+    <input type="submit" value="Сохранить изменения">
+</form><br><br>
+
+{% endblock content %}

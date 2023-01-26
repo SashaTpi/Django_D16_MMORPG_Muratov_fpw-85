@@ -1,0 +1,25 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Редактировать объявление {% endblock title %}
+
+{% load static %}
+<script type="text/javascipt" scr="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascipt" scr="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+
+{% block content %}
+
+<br><h3>Редактировать объявление</h3><br><br>
+
+<form align="left" method="POST">
+    {% csrf_token %}
+    {{ form.title }}<br>
+    {{ form.media }}<br>
+    {{ form.content }}<br><br>
+    {{ form.category }}<br><br>
+    <input type="submit" value="Сохранить изменения">
+</form><br><br>
+
+- объявление №{{ note.pk }}; дата создания: {{ note.dateCreation }} -<br><br><br>
+
+{% endblock content %}

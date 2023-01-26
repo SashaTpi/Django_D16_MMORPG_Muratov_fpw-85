@@ -1,0 +1,43 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Подробности объявления - {{ note.title }} {% endblock title %}
+
+{% block content %}<br>
+
+<h3>Подробности объявления</h3><br>
+
+-= {{ note.title }} =-<br>
+- автор: {{ note.user }}({{ note.user.first_name }} {{ note.user.last_name }}); категория: {{ note.category }}; дата создания: {{ note.datetime }} -
+<br><hr>
+
+{{ note.content | safe }}<br><br>
+
+
+<!--кнопки редактирования / удаления объявления
+видимы в том случае, если пользователь является автором объявления-->
+{% if edit_delete %}
+<a href="{% url 'edit' note.id %}"><u>Редактировать</u></a>
+<a href="{% url 'delete' note.id %}"><u>Удалить</u></a><br><br>
+{% endif %}
+
+
+<!--сообщение, которое выводится после отправления отклика-->
+{% if message_response %}
+<h6>Ваш отклик успешно отправлен</h6><br>
+{% endif %}
+
+
+<!--поле для ввода отклика, видимо, когда пользователь не является автором
+данного объявления и ранее еще не отравлял отклик-->
+{% if pole_response %}
+<h6>Введите ваши контакты</h6><br>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.content }}
+    <input type="submit" value="Оставить отклик">
+</form><br><br>
+{% endif %}
+
+
+<hr>
+{% endblock content %}

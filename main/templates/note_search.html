@@ -1,0 +1,61 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Поиск объявлений {% endblock title %}
+
+{% block content %}
+
+<br><h3>Поиск объявлений</h3>
+
+
+<br><form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+</form><br>
+
+
+<table cellspacing="5" cellpadding="10" border="1"
+       style=" border-spacing : 10px; border-color : blue; border-style: solid;" bgcolor="FFFFFF">
+    <tr>
+        <td width="400">
+            <h5>Название</h5>
+        </td>
+
+        <td width="100">
+            <h5>Автор</h5>
+        </td>
+
+        <td width="150">
+            <h5>Категория</h5>
+        </td>
+
+        <td width="130">
+            <h5>Дата</h5>
+        </td>
+
+    </tr>
+    {% for note in filter.qs %}
+    <tr>
+        <td>
+            <p align="left"><a href="{% url 'detail' note.id %}"><u>{{ note.title | truncatechars:60 }}</u></a></p>
+        </td>
+
+        <td>
+            <p align="center">{{ note.category }}</p>
+        </td>
+
+        <td>
+            <p align="center">{{ note.user }}</p>
+        </td>
+
+
+        <td>
+            <p align="center">{{ note.datetime | date:"d M Y" }}</p>
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+
+<br>
+{% endblock content %}
