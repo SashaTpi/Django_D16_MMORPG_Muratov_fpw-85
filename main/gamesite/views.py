@@ -82,7 +82,7 @@ class NoteSearch(ListView):
     model = Note
     template_name = 'note_search.html'
     context_object_name = 'note'
-    ordering = ['-datetime']
+    ordering = ['post_date'] #'-datetime'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -74,7 +74,7 @@ class Response(models.Model):
     note = models.ForeignKey(Note, on_delete=models.CASCADE, verbose_name='Объявление')
     user_response = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор отклика')
     content = models.TextField(verbose_name='Контент отклика')
-    post_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата отклика') #datetime
+    datetime = models.DateTimeField(auto_now_add=True, verbose_name='Дата отклика') #datetime
     status_del = models.BooleanField(default=False, verbose_name='Статус отклика - отклонен')
     status_add = models.BooleanField(default=False, verbose_name='Статус отклика - принят')
 

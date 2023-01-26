@@ -19,7 +19,6 @@ def send_msg(instance, created, **kwargs):
         response_content = Response.objects.get(pk=pk_pesponse).content
         response_time = Response.objects.get(pk=pk_pesponse).datetime
 
-
         title = f'У вас новый отклик от {str(user)[:15]}'
         msg = f'На ваше объявление "{note_title}" пришел {str(response_time)[:19]} новый отклик\n' \
               f'от {user} следующего содержания: ' \
@@ -28,13 +27,6 @@ def send_msg(instance, created, **kwargs):
         note_email = User.objects.get(pk=user_id).email
 
         send_mail(subject=title, message=msg, from_email=email, recipient_list=[note_email, ])
-
-        print("\n*************** ВЫВОД ПИСЬМА В КОНСОЛЬ (для удобства тестирования почты) *********************\n")
-        print('Тема письма:', title)
-        print('Контент письма:', msg)
-        print('Адрес почты сервера:', email)
-        print('Адрес отправления:', note_email)
-        print("\n************************************ КОНЕЦ ПИСЬМА ********************************************\n")
 
     elif instance.status_add:
 
@@ -50,9 +42,4 @@ def send_msg(instance, created, **kwargs):
 
         send_mail(subject=title, message=msg, from_email=email, recipient_list=[response_email, ])
 
-        print("\n*************** ВЫВОД ПИСЬМА В КОНСОЛЬ (для удобства тестирования почты) **********************\n")
-        print('Тема письма:', title)
-        print('Контент письма:', msg)
-        print('Адрес почты сервера:', email)
-        print('Адрес отправления:', response_email)
-        print("\n************************************ КОНЕЦ ПИСЬМА ********************************************\n")
+
