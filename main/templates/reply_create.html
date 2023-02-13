@@ -1,0 +1,15 @@
+{% extends 'static/index.html' %}
+
+
+{% block title %}
+<h3>Вы авторизованы, как: <u>{{ user }}</u></h3> <a href={% url 'account_logout' %}>Выйти</a><br><br><br>
+{% endblock %}
+
+{% block content%}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value='Отправить отклик'>
+</form>
+<a href={% url 'main' %}><u>Отмена</u></a>
+{% endblock %}

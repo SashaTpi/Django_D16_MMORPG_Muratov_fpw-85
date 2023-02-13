@@ -1,43 +1,68 @@
-{% extends 'flatpages/default.html' %}
+{% extends 'static/index.html' %}
+{% load custom_filters %}
 
-{% block title %} Все объявления {% endblock title %}
+{% block title %}
+<h3>Вы авторизованы, как: <u>{{ user }}</u></h3> <a href={% url 'account_logout' %}>Выйти</a><br><br><br>
+{% endblock %}
+
+<form action={% url 'login_account' %}>
+<input type="submit" value="Личный кабинет" />
+</form>
+<form action={% url 'create'%}>
+<input type="submit" value="Опубликовать объявление" />
+</form>
+<form action={% url 'reply_list' %}>
+<input type="submit" value="Редактировать мои отклики" />
+</form><br><br><br>
 
 {% block content %}
-<br>
-<h3>Все объявления</h3>
-<br>
-<br>
-{% for note in notes %}
-<h5><a href="{% url 'detail' note.id %}"><u>{{ note.title }}</u></a></h5>
-<br>
-<br>
-<h6>{{ note.content|safe  }}</h6>
-<br>
-<hr>
-<hr>
-
-{% endfor %}
-
-<!--код для пагинации-->
-{% if is_paginated %}
-{% if page_obj.has_previous %}
-<a href="?page=1">First</a>
-<a href="?page={{ page_obj.previous_page_number }}"><<<</a>
+{% if object_list %}
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Автор</th>
+                <th>Заголовок</th>
+                <th>Содержание</th>
+                <th>Категория</th>
+                <th>Время публикации</th>
+                <th></th>
+            </tr>
+        </thead>
+        {% for post in object_list %}
+        <tbody>
+            <tr>
+                <td>{% if user == post.author %}
+                    <form action={% url 'post_details' post.id%}>
+                    <input type="submit" value="Посмотреть отклики" />
+                    </form>
+                    <form action={% url 'update' post.id%}>
+                    <input type="submit" value="Редактировать" />
+                    </form>
+                    <form action={% url 'delete' post.id%}>
+                    <input type="submit" value="Удалить" />
+                    </form>
+                {% endif %}</td>
+                <td>{{ post.author }}</td>
+                <td>{{ post.title }}</td>
+                <td>{{ post.text|safe }}</td>
+                <td>{{ post.category }}</td>
+                <td>{{ post.date|date:"d-m-Y H:i"}}</td>
+                <td>
+                    {% if user == post.author %}
+                    {% if post|notaccept_reply_filter %}
+                        <br><b>Внимание! У вас есть <a href={% url 'post_details' post.id%}>неподтвержденные</a><br>отклики в этом объявлении!</b>
+                    {% endif %}
+                    {% else %}
+                    <form action={% url 'reply_create' %}>
+                    <input type="submit" value="Написать отклик" />
+                    </form></td>
+                    {% endif %}
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+{% else %}
+    <h2>Объявлений нет</h2>
 {% endif %}
-{% for num in page_obj.paginator.page_range %}
-{% if page_obj.number == num %}
-<a>{{ num }}</a>
-{% elif num > page_obj.number|add:'-5' and num < page_obj.number|add:'5' %}
-<a href="?page={{ num }}">{{ num }}</a>
-{% endif %}
-{% endfor %}
-{% if page_obj.has_next %}
-<a href="?page={{ page_obj.next_page_number }}">>>></a>
-<a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-{% endif %}
-{% endif %}
-<br>
-<hr>
-
-
-{% endblock content %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'static/index.html' %}
+{% load custom_filters %}
+
+
+{% block title %}
+<h3>Вы авторизованы, как: <u>{{ user }}</u></h3> <a href={% url 'account_logout' %}>Выйти</a><br><br><br>
+{% endblock %}
+
+{% block content %}
+{% if user == object.author %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Заголовок</th>
+            <th>Содержание</th>
+            <th>Категория</th>
+            <th>Подтвержденные отклики</th>
+            <th>Время публикации</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ object.title }}</td>
+            <td>{{ object.text|safe }}</td>
+            <td>{{ object.category }}</td>
+            <td>{{ object|accept_reply_filter|join:",<br> " }}</td>
+            <td>{{ object.date|date:"d-m-Y H:i"}}</td>
+        </tr>
+    </tbody>
+</table>
+{% with object|notaccept_reply_filter as post_reply_not_accept %}
+{% if post_reply_not_accept %}
+<h3>Неподтвержденные отклики в объявлении:</h3>
+{% for p_r_n_a in post_reply_not_accept %}
+{{ p_r_n_a }}
+<form method="POST">
+{% csrf_token %}
+<button type="submit" name="p_r_n_a_id" value="{{ p_r_n_a.id }}">Подтвердить</button>
+</form>
+<form action={% url 'comment_delete' p_r_n_a.id%}>
+<input type="submit" value="Удалить" />
+</form>
+{% endfor %}
+{% endif %}
+{% endwith %}
+<br><br>
+{% else %}
+<h1><br>Эта страница доступна только автору объявления</h1>
+{% endif %}
+<a href={% url 'main' %}><u>Назад на главную</u></a>
+{% endblock%}

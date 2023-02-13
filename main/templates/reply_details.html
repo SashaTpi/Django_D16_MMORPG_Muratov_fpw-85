@@ -1,0 +1,35 @@
+{% extends 'static/index.html' %}
+
+
+{% block title %}
+<h3>Вы авторизованы, как: <u>{{ user }}</u></h3> <a href={% url 'account_logout' %}>Выйти</a><br><br><br>
+{% endblock %}
+
+{% block content %}
+{% if user == object.author %}
+    <a href={% url 'reply_list' %}><u>Посмотреть все мои отклики</u></a><br><br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Содержание</th>
+                <th>Объявление</th>
+                <th>Подтверждено</th>
+                <th>Время публикации</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ object.text }}</td>
+                <td>{{ object.post }}</td>
+                <td>{% if oject.accept_status %}ДА{% else %}НЕТ{% endif %}</td>
+                <td>{{ object.date|date:"d-m-Y H:i" }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% else %}
+    <h1><br>Эта страница доступна только автору отклика</h1>
+{% endif %}
+
+<a href={% url 'main' %}><u>Назад</u></a>
+{% endblock %}

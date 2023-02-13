@@ -1,0 +1,19 @@
+{% extends 'static/index.html' %}
+
+{% block title %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подтверждение отклика</title>
+</head>
+{% endblock %}
+
+{% block content %}
+<body>
+    <h2>Добрый день, Пользователь сайта MMORPG,</h2>
+    <p>Автор объявления <b>{{ post }}</b> одобрил ваш отклик:
+        <i>{{ reply }} (http://127.0.0.1:8000/replies/{{ post_id }})</i><br><br>
+        С Уважением!<br>MMORPG</p>
+</body>
+</html>
+{% endblock %}

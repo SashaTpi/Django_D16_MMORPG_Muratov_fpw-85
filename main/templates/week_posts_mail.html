@@ -1,0 +1,20 @@
+{% extends 'static/index.html' %}
+
+
+{% block title %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новые посты на сайте MMORPG</title>
+</head>
+{% endblock %}
+
+{% block content %}
+<body>
+    <h2>Добрый день, Пользователь сайта MMORPG,</h2>
+    <p>Предлагаем Вам ознакомиться с новыми постами на нашем сайте:<br>
+        {% for post in new_posts %} <b><<{{ post }}>></b><br> {% endfor %}<br><br>
+        С Уважением!<br>MMORPG (http://127.0.0.1:8000)</p>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'static/index.html' %}
+
+
+{% block title %}
+<h3>Вы авторизованы, как: <u>{{ user }}</u></h3> <a href={% url 'account_logout' %}>Выйти</a><br><br><br>
+{% endblock %}
+
+{% block content %}
+{% if user == object.author %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <input type="submit" value='Внести изменения'>
+</form>
+{% else %}
+<h1><br>Эта страница доступна только автору объявления</h1>
+{% endif %}
+<a href={% url 'main' %}><u>Отмена</u></a>
+{% endblock %}

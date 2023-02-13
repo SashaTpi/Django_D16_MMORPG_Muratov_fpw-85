@@ -1,0 +1,37 @@
+{% extends 'static/index.html' %}
+
+
+{% block title %}
+<h3>Вы авторизованы, как: <u>{{ user }}</u></h3> <a href={% url 'account_logout' %}>Выйти</a><br><br><br>
+{% endblock %}
+
+{% block content %}
+{% if author_replies %}
+    <table>
+        <thead>
+            <tr>
+                <th>Содержание</th>
+                <th>Объявление</th>
+                <th>Подтверждено</th>
+                <th>Время публикации</th>
+                <th></th>
+            </tr>
+        </thead>
+        {% for reply in author_replies %}
+        <tbody>
+            <tr>
+                <td>{{ reply.text }}</td>
+                <td>{{ reply.post }}</td>
+                <td>{% if reply.accept_status %}ДА{% else %}НЕТ{% endif %}</td>
+                <td>{{ reply.date|date:"d-m-Y H:i" }}</td>
+                <td><button> <a href={% url 'reply_edit' reply.id%}>Редактировать</a></button>
+                    <button> <a href={% url 'reply_delete' reply.id%}>Удалить</a> </button></td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table><br><br><br>
+{% else %}
+    <h2>У вас нет откликов</h2>
+{% endif %}
+<a href={% url 'main' %}><u>Назад</u></a>
+{% endblock %}

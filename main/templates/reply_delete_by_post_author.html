@@ -1,0 +1,20 @@
+{% extends 'static/index.html' %}
+
+
+{% block title %}
+<h3>Вы авторизованы, как: <u>{{ user }}</u></h3> <a href={% url 'account_logout' %}>Выйти</a><br><br><br>
+{% endblock %}
+
+{% block content %}
+{% if user == post.author %}
+    <h2>Вы действительно хотите удалить данный отклик: << {{reply}} >> ?</h2>
+    <form method="POST">
+    {% csrf_token %}
+    <input type="submit" value=Подтвердить></form>
+    <form action={% url 'login_account' %}>
+    <input type="submit" value="Отменить" />
+    </form>
+{% else %}
+    <h1><br>Эта страница доступна только автору объявления, в котором находится этот отклик</h1>
+{% endif %}
+{% endblock %}

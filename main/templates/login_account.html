@@ -1,0 +1,48 @@
+{% extends 'static/index.html' %}
+{% load custom_filters %}
+
+{% block title %}
+<h3>Вы авторизованы, как: <u>{{ user }}</u></h3> <a href={% url 'account_logout' %}>Выйти</a><br><br><br>
+{% endblock %}
+
+{% block content %}
+{% if posts %}
+    <h1>Мои объявления:</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Время публикации</th>
+                <th>Заголовок</th>
+                <th>Содержание</th>
+                <th>Категория</th>
+                <th>Подтвержденные отклики</th>
+                <th>Неподтвержденные отклики</th>
+            </tr>
+        </thead>
+        {% for post in posts %}
+        <tbody>
+            <tr>
+                <td>{{ post.date|date:"d-m-Y H:i"}}</td>
+                <td>{{ post.title }}</td>
+                <td>{{ post.text|safe }}</td>
+                <td>{{ post.category }}</td>
+                <td>{{ post|accept_reply_filter|join:",<br> " }}</td>
+                {% with post|notaccept_reply_filter as notaccept_replies%}
+                <td>{% for reply in notaccept_replies %}{{ reply }}
+                <form method="POST">
+                {% csrf_token %}
+                <button type="submit" name="reply_id" value="{{ reply.id }}">Подтвердить</button>
+                </form>
+                <form action={% url 'reply_delete_by_post_author' reply.id%}>
+                <input type="submit" value="Удалить" />
+                </form>{% endfor %}</td>
+                {% endwith %}
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table><br><br>
+{% else %}
+    <h1>У вас еще нет объявлений</h1>
+{% endif %}
+<a href={% url 'main' %}><u>Назад</u></a>
+{% endblock %}

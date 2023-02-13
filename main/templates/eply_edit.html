@@ -1,0 +1,21 @@
+{% extends 'static/index.html' %}
+
+{% block title %}
+<h3>Вы авторизованы, как: <u>{{ user }}</u></h3> <a href={% url 'account_logout' %}>Выйти</a><br><br>
+<a href={% url 'main' %}><u>На главную</u></a><br><br><br>
+{% endblock %}
+
+
+{% block content %}
+{% if user == object.author %}
+    <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value='Редактировать отклик'>
+    </form>
+{% else %}
+    <h1><br>Эта страница доступна только автору отклика</h1>
+{% endif %}
+
+<a href={% url 'reply_list' %}><u>Назад</u></a>
+{% endblock %}
